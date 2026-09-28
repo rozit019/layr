@@ -16,7 +16,7 @@ export function createCategoryRouter({ authenticate, requireAdmin }) {
     typeof requireAdmin !== "function"
   ) {
     throw new TypeError(
-      "createCategoryRouter requires the backend authentication and admin middleware.",
+      "createCategoryRouter requires authentication and admin middleware.",
     );
   }
 
@@ -33,9 +33,9 @@ export function createCategoryRouter({ authenticate, requireAdmin }) {
         records.map((record) => [record.key, record.isEnabled]),
       );
       res.json({
-        categories: CATEGORY_DETAILS.map((category) => ({
-          ...category,
-          isEnabled: saved.get(category.key) ?? true,
+        categories: CATEGORY_DETAILS.map((item) => ({
+          ...item,
+          isEnabled: saved.get(item.key) ?? true,
         })),
       });
     } catch (error) {
@@ -46,14 +46,16 @@ export function createCategoryRouter({ authenticate, requireAdmin }) {
   router.patch("/:key", authenticate, requireAdmin, async (req, res, next) => {
     try {
       const { key } = req.params;
-      if (!STORE_CATEGORIES.includes(key))
+      if (!STORE_CATEGORIES.includes(key)) {
         return res
           .status(400)
           .json({ message: "Unknown storefront category." });
-      if (typeof req.body?.isEnabled !== "boolean")
+      }
+      if (typeof req.body?.isEnabled !== "boolean") {
         return res
           .status(400)
           .json({ message: "isEnabled must be true or false." });
+      }
 
       const setting = await CategorySetting.findOneAndUpdate(
         { key },

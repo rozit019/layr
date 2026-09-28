@@ -22,9 +22,9 @@
 .library-card small { color: #7e8679; font-size: 7px; text-transform: capitalize; }
 .library-card h3 { margin: 3px 0 3px; font-family: var(--display); font-size: 11px; letter-spacing: -.02em; }
 .library-card p { margin: 0; color: #858c81; font-size: 7px; }
-.library-download { min-height: 31px; gap: 8px; padding: 0 9px; font-size: 8px; }
-.library-download span { font-size: 12px; }
-.library-download:disabled { opacity: .6; }
+.library-action { min-height: 31px; gap: 8px; padding: 0 9px; font-size: 8px; }
+.library-action span { font-size: 12px; }
+.library-action:disabled { opacity: .6; }
 .account-empty { margin: 0; padding: 18px 0 4px; color: #80877c; font-size: 10px; line-height: 1.65; }
 .orders-list { border-top: 1px solid #e9ebe4; }
 .order-row { display: grid; grid-template-columns: 82px 1fr auto; gap: 13px; align-items: center; padding: 13px 0; border-bottom: 1px solid #e9ebe4; }
@@ -46,6 +46,6 @@
 @media (max-width: 480px) {
   .library-card { grid-template-columns: 40px 1fr; }
   .library-swatch { width: 39px; height: 39px; }
-  .library-download { grid-column: 2; justify-self: start; }
+  .library-action { grid-column: 2; justify-self: start; }
   .order-row { grid-template-columns: 70px 1fr auto; gap: 8px; }
 }

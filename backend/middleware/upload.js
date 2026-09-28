@@ -1,17 +1,19 @@
 import multer from "multer";
-import path from "path";
 
-// Multer writes uploads to a PRIVATE folder (never served by express.static)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "private/templates"),
-  filename: (req, file, cb) =>
-    cb(
-      null,
-      `${Date.now()}-${Math.round(Math.random() * 1e6)}${path.extname(file.originalname)}`,
-    ),
-});
+const allowedImageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 
-export const uploadTemplate = multer({
-  storage,
-  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB zip
+export const uploadPreview = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    files: 1,
+    fileSize: 10 * 1024 * 1024, // 10 MB; adjust if needed.
+  },
+  fileFilter(_req, file, callback) {
+    if (!allowedImageTypes.has(file.mimetype)) {
+      const error = new Error("Preview screenshot must be JPEG, PNG, or WebP.");
+      error.status = 400;
+      return callback(error);
+    }
+    callback(null, true);
+  },
 });

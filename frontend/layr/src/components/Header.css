@@ -9,6 +9,7 @@
 .brand-mark i:nth-child(3) { height: 10px; }
 .desktop-nav { display: flex; align-items: center; justify-content: center; gap: clamp(13px, 1.9vw, 27px); margin: 0 auto; }
 .desktop-nav a, .header-text-link { color: #596056; font-size: 11px; font-weight: 600; white-space: nowrap; transition: color .18s ease; }
+button.header-text-link { padding: 0; border: 0; background: transparent; font-family: inherit; cursor: pointer; }
 .desktop-nav a:hover, .desktop-nav a.active, .header-text-link:hover { color: #101410; }
 .desktop-nav a.active { text-decoration: underline; text-decoration-color: #aabd81; text-decoration-thickness: 2px; text-underline-offset: 7px; }
 .header-actions { display: flex; flex: 0 0 auto; align-items: center; gap: 18px; }
@@ -22,7 +23,8 @@
   .header-inner { gap: 17px; }
   .desktop-nav { gap: 13px; }
   .desktop-nav a { font-size: 10px; }
-  .header-text-link { display: none; }
+  .header-text-link:not(.header-logout-link) { display: none; }
+  .header-logout-link { display: inline-flex; }
 }
 @media (max-width: 760px) {
   .header-inner { min-height: 67px; justify-content: space-between; }

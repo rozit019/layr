@@ -31,7 +31,7 @@ export default function SignupPage() {
       <div className="auth-card">
         <p className="eyebrow"><span className="eyebrow-dot" /> YOUR NEXT CHAPTER</p>
         <h1>Make a little<br /><em>room for you.</em></h1>
-        <p className="auth-intro">Create an account to save purchases and download templates you own.</p>
+        <p className="auth-intro">Create an account to save your purchases and access your customization links.</p>
         <form className="auth-form" onSubmit={handleSubmit}>
           <label>Your name<input type="text" autoComplete="name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} required /></label>
           <label>Email address<input type="email" autoComplete="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} required /></label>

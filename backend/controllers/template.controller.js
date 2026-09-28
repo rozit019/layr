@@ -1,98 +1,179 @@
-import path from "path";
-import fs from "fs";
 import Template from "../models/Template.js";
+import { STORE_CATEGORIES } from "../models/CategorySetting.js";
 import Order from "../models/Order.js";
+import {
+  enabledStoreCategoryKeys,
+  isStoreCategoryEnabled,
+} from "../utils/templateVisibility.js";
+import {
+  deletePreviewImage,
+  uploadPreviewImage,
+} from "../utils/cloudinaryUpload.js";
 
-// ── PUBLIC ─────────────────────────────────────────────────────────────
+function isHttpUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
 
+// PUBLIC: the projection intentionally never includes customizeUrl.
 export const listTemplates = async (req, res) => {
-  const filter = { isActive: true };
-  if (req.query.category) filter.category = req.query.category;
-  const templates = await Template.find(filter).select(Template.publicFields());
+  const enabledCategories = await enabledStoreCategoryKeys();
+  const filter = { isActive: true, category: { $in: enabledCategories } };
+
+  if (req.query.category) {
+    if (!STORE_CATEGORIES.includes(req.query.category)) {
+      return res.status(400).json({ message: "Unknown template category." });
+    }
+    filter.category = req.query.category;
+  }
+
+  const templates = await Template.find(filter)
+    .select(Template.publicFields())
+    .sort("-createdAt");
   res.json({ templates });
 };
 
+// PUBLIC: do not return the private customization URL.
 export const getTemplate = async (req, res) => {
   const template = await Template.findOne({
     slug: req.params.slug,
     isActive: true,
   }).select(Template.publicFields());
-  if (!template) return res.status(404).json({ message: "Template not found" });
+  if (!template || !(await isStoreCategoryEnabled(template.category))) {
+    return res.status(404).json({ message: "Template not found" });
+  }
   res.json({ template });
 };
 
-// ── CUSTOMER ───────────────────────────────────────────────────────────
-
-// Streams the file from the PRIVATE dir. The real disk path is never exposed.
-export const downloadTemplate = async (req, res) => {
-  const template = await Template.findOne({
-    slug: req.params.slug,
-    isActive: true,
-  });
-  if (!template) return res.status(404).json({ message: "Template not found" });
-
-  const hasAccess = await Order.hasAccess(req.user._id, template._id);
-  if (!hasAccess) {
-    return res
-      .status(403)
-      .json({ message: "Purchase required to download this template" });
-  }
-
-  const absPath = path.resolve(template.filePath);
-  if (!absPath.startsWith(path.resolve("private")) || !fs.existsSync(absPath)) {
-    return res.status(404).json({ message: "File missing on server" });
-  }
-
-  res.download(absPath, template.fileName);
-};
-
+// CUSTOMER: only completed purchases are included, so only buyers receive the URL.
 export const myLibrary = async (req, res) => {
-  const orders = await Order.find({
-    user: req.user._id,
-    status: "COMPLETE",
-  }).populate("template", "name slug category coverImage techStack");
-  res.json({ templates: orders.map((o) => o.template) });
+  const orders = await Order.find({ user: req.user._id, status: "COMPLETE" })
+    .populate({
+      path: "template",
+      select:
+        "name slug category description price coverImage techStack +customizeUrl",
+    })
+    .sort("-createdAt");
+
+  const uniqueTemplates = new Map();
+  for (const order of orders) {
+    if (order.template)
+      uniqueTemplates.set(String(order.template._id), order.template);
+  }
+  res.json({ templates: [...uniqueTemplates.values()] });
 };
 
-// ── ADMIN ──────────────────────────────────────────────────────────────
-
+// ADMIN: upload only a storefront screenshot to Cloudinary; no ZIP is used.
 export const createTemplate = async (req, res) => {
-  const { name, slug, category, description, price, techStack, coverImage } =
+  const { name, slug, category, description, price, techStack, customizeUrl } =
     req.body;
-  if (!req.file)
-    return res.status(400).json({ message: "Template file (zip) is required" });
+  if (!req.file?.buffer) {
+    return res
+      .status(400)
+      .json({ message: "Website screenshot (previewImage) is required" });
+  }
+  if (!STORE_CATEGORIES.includes(category)) {
+    return res
+      .status(400)
+      .json({ message: "Choose a valid storefront category." });
+  }
+  if (!customizeUrl || !isHttpUrl(customizeUrl)) {
+    return res
+      .status(400)
+      .json({
+        message: "A valid HTTP or HTTPS customization URL is required.",
+      });
+  }
 
-  const template = await Template.create({
-    name,
-    slug,
-    category,
-    description,
-    price: Number(price),
-    techStack,
-    coverImage,
-    filePath: req.file.path, // private — never sent to clients
-    fileName: req.file.originalname,
-  });
-  const publicTemplate = await Template.findById(template._id).select(
-    Template.publicFields(),
-  );
-  res.status(201).json({ template: publicTemplate });
+  const image = await uploadPreviewImage(req.file.buffer);
+  try {
+    const template = await Template.create({
+      name,
+      slug,
+      category,
+      description,
+      price: Number(price),
+      techStack,
+      customizeUrl,
+      coverImage: image.secureUrl,
+      coverImagePublicId: image.publicId,
+    });
+    const publicTemplate = await Template.findById(template._id).select(
+      Template.publicFields(),
+    );
+    res.status(201).json({ template: publicTemplate });
+  } catch (error) {
+    await deletePreviewImage(image.publicId).catch(() => {});
+    throw error;
+  }
 };
 
+// ADMIN: edit listing fields, the private URL, and optionally replace the screenshot.
 export const updateTemplate = async (req, res) => {
-  const template = await Template.findOneAndUpdate(
-    { slug: req.params.slug },
-    req.body,
-    { new: true },
-  ).select(Template.publicFields());
+  const template = await Template.findOne({ slug: req.params.slug }).select(
+    "+customizeUrl +coverImagePublicId",
+  );
   if (!template) return res.status(404).json({ message: "Template not found" });
-  res.json({ template });
+
+  const allowedFields = [
+    "name",
+    "slug",
+    "category",
+    "description",
+    "price",
+    "techStack",
+    "customizeUrl",
+    "isActive",
+  ];
+  const updates = {};
+  for (const field of allowedFields) {
+    if (req.body[field] !== undefined) updates[field] = req.body[field];
+  }
+  if (updates.category && !STORE_CATEGORIES.includes(updates.category)) {
+    return res
+      .status(400)
+      .json({ message: "Choose a valid storefront category." });
+  }
+  if (updates.customizeUrl && !isHttpUrl(updates.customizeUrl)) {
+    return res
+      .status(400)
+      .json({ message: "Customization URL must start with HTTP or HTTPS." });
+  }
+  if (updates.price !== undefined) updates.price = Number(updates.price);
+
+  const oldImagePublicId = template.coverImagePublicId;
+  let newImage;
+  if (req.file?.buffer) {
+    newImage = await uploadPreviewImage(req.file.buffer);
+    updates.coverImage = newImage.secureUrl;
+    updates.coverImagePublicId = newImage.publicId;
+  }
+
+  try {
+    await template.set(updates).save();
+    const publicTemplate = await Template.findById(template._id).select(
+      Template.publicFields(),
+    );
+    res.json({ template: publicTemplate });
+    if (newImage && oldImagePublicId) {
+      await deletePreviewImage(oldImagePublicId).catch(() => {});
+    }
+  } catch (error) {
+    if (newImage) await deletePreviewImage(newImage.publicId).catch(() => {});
+    throw error;
+  }
 };
 
 export const deactivateTemplate = async (req, res) => {
-  await Template.findOneAndUpdate(
+  const template = await Template.findOneAndUpdate(
     { slug: req.params.slug },
-    { isActive: false },
-  );
+    { $set: { isActive: false } },
+    { new: true },
+  ).select("slug");
+  if (!template) return res.status(404).json({ message: "Template not found" });
   res.json({ message: "Template deactivated" });
 };

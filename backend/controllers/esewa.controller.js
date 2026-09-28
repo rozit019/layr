@@ -1,9 +1,37 @@
 import Order from "../models/Order.js";
 import { decodeEsewaData, verifyPayment } from "../utils/esewa.js";
 
-const FRONTEND = () => process.env.FRONTEND_URL;
+function redirectToFrontend(res, path, query = {}) {
+  const frontendBase = process.env.FRONTEND_URL;
+  if (!frontendBase) {
+    console.error(
+      "FRONTEND_URL is missing; cannot redirect to the payment result page.",
+    );
+    return res
+      .status(500)
+      .send(
+        "Payment result redirect is not configured. Set FRONTEND_URL in the backend .env.",
+      );
+  }
 
-// eSewa redirects here with ?data=<base64 JSON>
+  let target;
+  try {
+    target = new URL(path, frontendBase);
+  } catch (error) {
+    console.error("Invalid FRONTEND_URL:", error.message);
+    return res
+      .status(500)
+      .send("Payment result redirect is not configured correctly.");
+  }
+
+  for (const [key, value] of Object.entries(query)) {
+    if (value !== undefined && value !== null)
+      target.searchParams.set(key, String(value));
+  }
+  return res.redirect(target.toString());
+}
+
+// eSewa redirects here with ?data=<base64 JSON>.
 export const paymentSuccess = async (req, res) => {
   try {
     const decoded = decodeEsewaData(req.query.data);
@@ -12,7 +40,9 @@ export const paymentSuccess = async (req, res) => {
 
     const order = await Order.findOne({ transactionUuid: transaction_uuid });
     if (!order) {
-      return res.redirect(`${FRONTEND()}/payment/error?reason=order_not_found`);
+      return redirectToFrontend(res, "/payment/error", {
+        reason: "order_not_found",
+      });
     }
 
     // Server-to-server check — never trust the redirect params alone.
@@ -20,18 +50,18 @@ export const paymentSuccess = async (req, res) => {
     if (result.status !== "COMPLETE" || status !== "COMPLETE") {
       order.status = "FAILED";
       await order.save();
-      return res.redirect(`${FRONTEND()}/payment/failed`);
+      return redirectToFrontend(res, "/payment/failed");
     }
 
     order.status = "COMPLETE";
     order.esewaRefId = transaction_code;
     await order.save();
 
-    // Redirect to frontend library — the download button appears there.
-    res.redirect(`${FRONTEND()}/payment/success?order=${order._id}`);
+    // The frontend fetches the private customization link for this paid order owner.
+    return redirectToFrontend(res, "/payment/success", { order: order._id });
   } catch (err) {
     console.error("eSewa success handler error:", err);
-    res.redirect(`${FRONTEND()}/payment/error`);
+    return redirectToFrontend(res, "/payment/error");
   }
 };
 
@@ -45,5 +75,5 @@ export const paymentFailure = async (req, res) => {
   } catch (err) {
     console.error("eSewa failure handler error:", err);
   }
-  res.redirect(`${FRONTEND()}/payment/failed`);
+  return redirectToFrontend(res, "/payment/failed");
 };

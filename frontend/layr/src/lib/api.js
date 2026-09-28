@@ -36,6 +36,7 @@ export function normalizeTemplate(template) {
     category,
     tagline: template.tagline || template.description || 'A thoughtful template, ready to make your own.',
     previewStyle: template.previewStyle || category,
+    coverImage: template.coverImage || template.previewImageUrl || template.previewImage || '',
     currency: template.currency || 'NPR',
     price: Number(template.price || 0),
     featured: Boolean(template.featured || template.isFeatured),

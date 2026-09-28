@@ -1,17 +1,134 @@
-.payment-result-page { display: grid; min-height: calc(100vh - 78px); place-items: center; padding: 45px 18px; background: #f3f1e9; }
-.payment-result-card { width: min(100%, 500px); padding: 40px; border: 1px solid #e0e2d9; border-radius: 9px; background: #fbfbf7; text-align: center; box-shadow: 0 16px 45px rgba(38, 45, 35, .06); }
-.payment-result-mark { display: grid; width: 53px; height: 53px; margin: 0 auto 19px; place-items: center; border-radius: 50%; background: #efe9df; color: #947d56; font-size: 22px; }
-.payment-result-page--success .payment-result-mark { background: #eaf1df; color: #6d8755; }
-.payment-result-card .eyebrow { justify-content: center; margin-bottom: 15px; }
-.payment-result-card h1 { margin: 0; font-family: var(--display); font-size: clamp(43px, 7vw, 58px); font-weight: 600; letter-spacing: -.075em; line-height: .95; }
-.payment-result-card h1 em { color: #758d5b; font-family: var(--serif); font-weight: 400; }
-.payment-result-card > p:not(.eyebrow) { margin: 17px 0 0; color: #737a70; font-size: 10px; line-height: 1.8; }
-.payment-order-id { display: block; margin-top: 14px; color: #858c81; font-size: 8px; }
-.payment-result-actions { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 23px; }
-.payment-result-actions .button { min-height: 39px; padding-inline: 13px; font-size: 9px; }
-.payment-secondary-link { color: #637158; font-size: 8px; font-weight: 700; }
+.payment-result-page {
+  display: grid;
+  min-height: calc(100vh - 78px);
+  place-items: center;
+  padding: 45px 18px;
+  background: #f3f1e9;
+}
+.payment-result-card {
+  width: min(100%, 500px);
+  padding: 40px;
+  border: 1px solid #e0e2d9;
+  border-radius: 9px;
+  background: #fbfbf7;
+  text-align: center;
+  box-shadow: 0 16px 45px rgba(38, 45, 35, 0.06);
+}
+.payment-result-mark {
+  display: grid;
+  width: 53px;
+  height: 53px;
+  margin: 0 auto 19px;
+  place-items: center;
+  border-radius: 50%;
+  background: #efe9df;
+  color: #947d56;
+  font-size: 22px;
+}
+.payment-result-page--success .payment-result-mark {
+  background: #eaf1df;
+  color: #6d8755;
+}
+.payment-result-card .eyebrow {
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.payment-result-card h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(43px, 7vw, 58px);
+  font-weight: 600;
+  letter-spacing: -0.075em;
+  line-height: 0.95;
+}
+.payment-result-card h1 em {
+  color: #758d5b;
+  font-family: var(--serif);
+  font-weight: 400;
+}
+.payment-result-card > p:not(.eyebrow) {
+  margin: 17px 0 0;
+  color: #737a70;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.payment-order-id {
+  display: block;
+  margin-top: 14px;
+  color: #858c81;
+  font-size: 8px;
+}
+.payment-result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 23px;
+}
+.payment-result-actions .button {
+  min-height: 39px;
+  padding-inline: 13px;
+  font-size: 9px;
+}
+.payment-secondary-link {
+  color: #637158;
+  font-size: 8px;
+  font-weight: 700;
+}
 @media (max-width: 760px) {
-  .payment-result-page { min-height: calc(100vh - 67px); }
-  .payment-result-card { padding: 30px 22px; }
-  .payment-result-actions { align-items: stretch; flex-direction: column; }
+  .payment-result-page {
+    min-height: calc(100vh - 67px);
+  }
+  .payment-result-card {
+    padding: 30px 22px;
+  }
+  .payment-result-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+.customize-link-status {
+  margin: 14px 0 0;
+  color: #75815f;
+  font-size: 9px;
+}
+.customize-link-error {
+  margin: 14px 0 0;
+  padding: 9px 11px;
+  border-radius: 4px;
+  background: #f8e7e5;
+  color: #9b4f49;
+  font-size: 8px;
+  line-height: 1.55;
+}
+.customize-link-result {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid #e0e2d9;
+  border-radius: 6px;
+  background: #f4f3ec;
+  text-align: left;
+}
+.customize-link-label {
+  display: block;
+  margin-bottom: 7px;
+  color: #858c81;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.customize-link-url {
+  display: block;
+  overflow-wrap: anywhere;
+  color: #586c48;
+  font-size: 11px;
+  line-height: 1.6;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.customize-link-countdown {
+  display: block;
+  margin-top: 8px;
+  color: #858c81;
+  font-size: 8px;
 }

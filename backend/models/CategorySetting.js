@@ -27,7 +27,5 @@ const categorySettingSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const CategorySetting =
-  mongoose.models.CategorySetting ||
+export default mongoose.models.CategorySetting ||
   mongoose.model("CategorySetting", categorySettingSchema);
-export default CategorySetting;

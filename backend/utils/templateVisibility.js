@@ -1,13 +1,20 @@
-import CategorySetting, { STORE_CATEGORIES } from './CategorySetting.js';
+import CategorySetting, {
+  STORE_CATEGORIES,
+} from "../models/CategorySetting.js";
 
 export async function isStoreCategoryEnabled(categoryKey) {
   if (!STORE_CATEGORIES.includes(categoryKey)) return false;
-  const setting = await CategorySetting.findOne({ key: categoryKey }).select('isEnabled').lean();
-  // Missing settings mean enabled, matching the public GET /api/categories defaults.
+  const setting = await CategorySetting.findOne({ key: categoryKey })
+    .select("isEnabled")
+    .lean();
+  // Missing category records default to enabled.
   return setting?.isEnabled !== false;
 }
 
 export async function enabledStoreCategoryKeys() {
-  const disabled = await CategorySetting.find({ isEnabled: false, key: { $in: STORE_CATEGORIES } }).distinct('key');
+  const disabled = await CategorySetting.find({
+    isEnabled: false,
+    key: { $in: STORE_CATEGORIES },
+  }).distinct("key");
   return STORE_CATEGORIES.filter((key) => !disabled.includes(key));
 }
