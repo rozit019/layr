@@ -52,7 +52,7 @@ function BenefitStrip() {
   return <div className="benefit-strip"><div className="container benefit-list">{benefits.map(([icon, text]) => <span key={text}><i>{icon}</i>{text}</span>)}</div></div>;
 }
 
-function HomeCategories() {
+function HomeCategories({ availableCategories = categories }) {
   return (
     <section className="home-categories section-space" id="categories">
       <div className="container">
@@ -61,9 +61,9 @@ function HomeCategories() {
           <p className="section-description">One thoughtful little site can show the work you do—or make an ordinary day feel like a milestone.</p>
         </div>
         <div className="home-category-grid">
-          {categories.map((category, index) => (
+          {availableCategories.map((category, index) => (
             <Link className={`home-category-card home-category-card--${category.key}`} key={category.key} to={category.path}>
-              <span className="category-card-top"><span>{String(index + 1).padStart(2, '0')} / 04</span><b>{category.icon}</b></span>
+              <span className="category-card-top"><span>{String(index + 1).padStart(2, '0')} / {String(availableCategories.length).padStart(2, '0')}</span><b>{category.icon}</b></span>
               <span className="category-card-bottom"><span><strong>{category.title}</strong><small>{category.cardCopy}</small></span><i aria-hidden="true">↗</i></span>
             </Link>
           ))}
@@ -73,7 +73,7 @@ function HomeCategories() {
   );
 }
 
-function StepsSection() {
+function StepsSection({ browsePath = '/portfolios' }) {
   const steps = [
     ['01', 'Choose the kind of page', 'Portfolio, birthday surprise, proposal, or anniversary—start with what you’re making.', '⌕'],
     ['02', 'Make it feel like you', 'Add your own words, memories, photos, and the little details that matter.', '✳'],
@@ -82,28 +82,33 @@ function StepsSection() {
   return (
     <section className="steps-section" id="how-it-works">
       <div className="container steps-grid">
-        <div className="steps-intro"><p className="eyebrow eyebrow-light"><span className="eyebrow-dot" /> SIMPLE BY DESIGN</p><h2>From first idea<br />to <em>their inbox.</em></h2><p>Good-looking pages don’t need to start from scratch. Find a layout, make it personal, and share it when it feels right.</p><Link className="button button-light" to="/portfolios">Find your starting point <span>↗</span></Link></div>
+        <div className="steps-intro"><p className="eyebrow eyebrow-light"><span className="eyebrow-dot" /> SIMPLE BY DESIGN</p><h2>From first idea<br />to <em>their inbox.</em></h2><p>Good-looking pages don’t need to start from scratch. Find a layout, make it personal, and share it when it feels right.</p><Link className="button button-light" to={browsePath}>Find your starting point <span>↗</span></Link></div>
         <div className="steps-list">{steps.map(([number, title, description, icon]) => <article className="step-row" key={number}><span className="step-number">{number}</span><div><h3>{title}</h3><p>{description}</p></div><span className="step-symbol">{icon}</span></article>)}</div>
       </div>
     </section>
   );
 }
 
-export default function HomePage({ onAdd }) {
-  const featured = templates.filter((template) => template.featured);
+export default function HomePage({ onAdd, products = templates, availableCategories = categories }) {
+  const featuredItems = products.filter((template) => template.featured && !template.demoOnly);
+  const liveFallback = products.filter((template) => !template.demoOnly);
+  const demoFeatured = products.filter((template) => template.featured && template.demoOnly);
+  const featured = featuredItems.length ? featuredItems.slice(0, 4) : liveFallback.length ? liveFallback.slice(0, 4) : demoFeatured.slice(0, 4);
+  const momentPath = availableCategories.find((category) => category.key === 'birthday')?.path || availableCategories[0]?.path || '/';
+  const browsePath = availableCategories[0]?.path || '/';
   return (
     <main>
       <HomeHero />
       <BenefitStrip />
       <section className="featured-section section-space" id="featured">
         <div className="container">
-          <div className="section-heading section-heading--split"><div><p className="eyebrow"><span className="eyebrow-dot" /> THE STARTING LINE</p><h2>Templates with<br /><em>a little feeling.</em></h2></div><div className="section-aside"><p>Thoughtful starting points for your portfolio, or the message you want someone to keep.</p><Link className="text-link" to="/birthday-pages">See all moments <span>↗</span></Link></div></div>
+          <div className="section-heading section-heading--split"><div><p className="eyebrow"><span className="eyebrow-dot" /> THE STARTING LINE</p><h2>Templates with<br /><em>a little feeling.</em></h2></div><div className="section-aside"><p>Thoughtful starting points for your portfolio, or the message you want someone to keep.</p><Link className="text-link" to={momentPath}>See all moments <span>↗</span></Link></div></div>
           <TemplateGrid items={featured} onAdd={onAdd} className="featured-grid" />
         </div>
       </section>
-      <HomeCategories />
-      <StepsSection />
-      <section className="home-last-call"><div className="container"><span>MAKE A PAGE THEY’LL REMEMBER</span><h2>Every story needs<br /><em>a place to land.</em></h2><Link to="/birthday-pages" className="button button-dark">Find your template <span>↗</span></Link></div></section>
+      <HomeCategories availableCategories={availableCategories} />
+      <StepsSection browsePath={browsePath} />
+      <section className="home-last-call"><div className="container"><span>MAKE A PAGE THEY’LL REMEMBER</span><h2>Every story needs<br /><em>a place to land.</em></h2><Link to={momentPath} className="button button-dark">Find your template <span>↗</span></Link></div></section>
     </main>
   );
 }

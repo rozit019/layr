@@ -4,10 +4,11 @@ import BagIcon from './BagIcon.jsx';
 import './TemplateCard.css';
 
 function BuyIconButton({ template, onAdd, compact = false }) {
+  const action = template.demoOnly ? 'Add preview' : 'Buy template';
   return (
-    <button className={`buy-icon${compact ? ' buy-icon--compact' : ''}`} type="button" onClick={() => onAdd(template)} aria-label={`Add ${template.title} to your bag`} title="Add to bag">
+    <button className={`buy-icon${compact ? ' buy-icon--compact' : ''}`} type="button" onClick={() => onAdd(template)} aria-label={`${action}: ${template.title}`} title={action}>
       <BagIcon />
-      {!compact && <span>Buy template</span>}
+      {!compact && <span>{action}</span>}
     </button>
   );
 }
@@ -40,6 +41,7 @@ export default function TemplateCard({ template, onAdd, index = 0 }) {
         <span className="template-badge">{template.badge || category?.label}</span>
         <BuyIconButton template={template} onAdd={onAdd} compact />
         <MiniSite template={template} />
+        {template.coverImage && <img className="template-cover-image" src={template.coverImage} alt={`${template.title} cover`} loading="lazy" onError={(event) => { event.currentTarget.style.display = 'none'; }} />}
       </div>
       <div className="template-info">
         <div className="template-category-label">{category?.label} <span>·</span> Digital template</div>

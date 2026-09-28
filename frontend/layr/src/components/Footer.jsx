@@ -3,7 +3,7 @@ import { categories } from '../data/catalog.js';
 import Brand from './Brand.jsx';
 import './Footer.css';
 
-export default function Footer() {
+export default function Footer({ categories: availableCategories = categories }) {
   return (
     <footer className="site-footer">
       <div className="container footer-top">
@@ -14,7 +14,7 @@ export default function Footer() {
         <div className="footer-links">
           <div>
             <span className="footer-label">EXPLORE</span>
-            {categories.map((category) => <Link key={category.key} to={category.path}>{category.label}</Link>)}
+            {availableCategories.map((category) => <Link key={category.key} to={category.path}>{category.label}</Link>)}
           </div>
           <div>
             <span className="footer-label">LAYR</span>

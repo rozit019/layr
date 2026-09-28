@@ -1,19 +1,19 @@
 import { Link } from 'react-router-dom';
-import { categories, getCategory, getTemplatesByCategory } from '../data/catalog.js';
+import { categories, getCategory, templates as fallbackTemplates } from '../data/catalog.js';
 import CategoryScene from './CategoryScene.jsx';
 import { TemplateGrid } from './TemplateCard.jsx';
 import './CategoryPageLayout.css';
 
-function RelatedCategories({ currentKey }) {
-  const related = categories.filter((category) => category.key !== currentKey).slice(0, 3);
+function RelatedCategories({ currentKey, availableCategories = categories }) {
+  const related = availableCategories.filter((category) => category.key !== currentKey).slice(0, 3);
   return (
     <section className="related-section"><div className="container"><div className="related-heading"><p className="eyebrow"><span className="eyebrow-dot" /> KEEP EXPLORING</p><h2>Another kind of page?</h2></div><div className="related-links">{related.map((category) => <Link to={category.path} key={category.key}><span>{category.label}</span><i>↗</i></Link>)}</div></div></section>
   );
 }
 
-export default function CategoryPageLayout({ categoryKey, onAdd }) {
+export default function CategoryPageLayout({ categoryKey, onAdd, products = fallbackTemplates, availableCategories = categories }) {
   const category = getCategory(categoryKey);
-  const categoryTemplates = getTemplatesByCategory(categoryKey);
+  const categoryTemplates = products.filter((template) => template.category === categoryKey);
   if (!category) return null;
 
   return (
@@ -39,7 +39,7 @@ export default function CategoryPageLayout({ categoryKey, onAdd }) {
       <section className="personalize-band">
         <div className="container personalize-inner"><span className="personalize-icon">{category.icon}</span><div><p className="eyebrow">A TEMPLATE IS JUST THE BEGINNING</p><h2>Keep the layout.<br /><em>Make it your story.</em></h2></div><p>{category.cardCopy} Personalize the words, colors, and photos so every detail feels like you.</p><a href="#category-templates" className="round-link" aria-label="Back to templates">↗</a></div>
       </section>
-      <RelatedCategories currentKey={category.key} />
+      <RelatedCategories currentKey={category.key} availableCategories={availableCategories} />
     </main>
   );
 }
