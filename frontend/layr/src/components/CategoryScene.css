@@ -1,0 +1,88 @@
+.category-scene { position: relative; min-height: 442px; isolation: isolate; }
+.scene-halo { position: absolute; top: 8px; right: -25px; width: 95%; height: 420px; border: 1px solid rgba(111, 127, 95, .18); border-radius: 47% 53% 45% 55%; background: rgba(255, 255, 255, .23); transform: rotate(-11deg); }
+.scene-halo::after { position: absolute; inset: 17px 18px; border: 1px solid rgba(111, 127, 95, .1); border-radius: 53% 47% 54% 46%; content: ''; transform: rotate(20deg); }
+.scene-browser { position: absolute; top: 28px; left: 1%; z-index: 1; width: 83%; overflow: hidden; border: 1px solid rgba(38, 43, 36, .13); border-radius: 9px; background: white; box-shadow: 0 25px 65px rgba(41, 49, 35, .14); transform: rotate(-2deg); }
+.scene-browser-bar { display: grid; grid-template-columns: 49px 1fr 22px; align-items: center; height: 27px; padding: 0 9px; border-bottom: 1px solid #e9eae5; background: #f6f6f2; color: #858b82; font-size: 6px; }
+.scene-browser-bar > span:first-child { display: flex; gap: 3px; }
+.scene-browser-bar i { width: 5px; height: 5px; border-radius: 50%; background: #d7d9d1; }
+.scene-browser-bar i:first-child { background: #e8a18a; }
+.scene-browser-bar i:nth-child(2) { background: #e8d17d; }
+.scene-browser-bar i:nth-child(3) { background: #9ab988; }
+.scene-browser-bar small { justify-self: center; padding: 3px 24px; border: 1px solid #ebebe6; border-radius: 4px; background: white; font-size: 6px; }
+.scene-browser-bar > span:last-child { justify-self: end; }
+.scene-site { padding: 0 14px; }
+.scene-nav { display: flex; align-items: center; justify-content: space-between; height: 33px; border-bottom: 1px solid rgba(63, 71, 57, .13); }
+.scene-nav b { max-width: 53%; overflow: hidden; font-size: 6px; font-weight: 800; letter-spacing: .08em; text-overflow: ellipsis; white-space: nowrap; }
+.scene-nav span { color: #7a8176; font-size: 5px; font-weight: 700; letter-spacing: .04em; }
+.scene-body { position: relative; display: flex; align-items: center; min-height: 270px; overflow: hidden; padding: 26px 14px 20px; }
+.scene-copy { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; width: 55%; }
+.scene-copy > small { max-width: 100%; margin-bottom: 12px; color: #7d796a; font-size: 5px; font-weight: 800; letter-spacing: .11em; }
+.scene-copy > strong { color: #38453a; font-family: var(--serif); font-size: clamp(30px, 3.2vw, 41px); font-weight: 400; letter-spacing: -.07em; line-height: .94; white-space: pre-line; }
+.scene-copy > span { margin-top: 15px; padding-bottom: 3px; border-bottom: 1px solid currentColor; color: #707763; font-size: 5px; font-weight: 700; letter-spacing: .05em; }
+.scene-visual { position: absolute; top: 17px; right: 0; width: 47%; height: 240px; }
+.scene-visual--portfolio .scene-work { position: absolute; display: block; border: 2px solid rgba(255, 255, 255, .72); border-radius: 3px; }
+.scene-work-one { top: 20px; right: 6%; width: 53%; height: 59%; transform: rotate(5deg); }
+.scene-work-two { top: 51px; right: 43%; width: 44%; height: 46%; transform: rotate(-8deg); }
+.scene-work-three { right: 4%; bottom: 12px; width: 46%; height: 32%; }
+.scene-visual--portfolio > b { position: absolute; right: 14%; bottom: 19px; z-index: 2; font-size: 5px; letter-spacing: .08em; line-height: 1.5; }
+.scene-visual--birthday .scene-balloon { position: absolute; top: 17px; width: 42px; height: 56px; border-radius: 50%; }
+.scene-visual--birthday .scene-balloon::after { position: absolute; bottom: -34px; left: 50%; height: 35px; border-left: 1px solid #a88c82; content: ''; }
+.scene-balloon-one { left: 10%; transform: rotate(-9deg); }
+.scene-balloon-two { top: 28px !important; right: 11%; transform: rotate(10deg); }
+.scene-visual--birthday .scene-cake-layer { position: absolute; right: 22%; display: block; width: 83px; height: 39px; border-radius: 7px 7px 13px 13px; }
+.scene-visual--birthday .scene-cake-top { bottom: 58px; width: 66px; height: 31px; }
+.scene-visual--birthday .scene-cake-bottom { bottom: 24px; }
+.scene-visual--birthday .scene-cake-layer::before { position: absolute; top: -7px; left: -2px; width: calc(100% + 4px); height: 14px; border-radius: 50%; content: ''; }
+.scene-visual--birthday > b { position: absolute; right: 12%; bottom: 3px; font-size: 5px; letter-spacing: .1em; }
+.scene-visual--proposal .scene-ring { position: absolute; top: 32px; right: 16%; width: 112px; height: 112px; border: 2px solid #b8887d; border-radius: 50%; box-shadow: inset 0 0 0 8px rgba(255,255,255,.25); }
+.scene-visual--proposal .scene-ring::after { position: absolute; top: -12px; left: 50%; width: 20px; height: 27px; border: 1px solid #b8887d; border-radius: 4px 4px 50% 50%; background: #dfb37c; content: ''; transform: translateX(-50%); }
+.scene-heart { position: absolute; top: 49px; right: 26%; z-index: 2; color: #fff6ed; font-family: var(--serif); font-size: 40px; }
+.scene-visual--proposal > b { position: absolute; right: 12%; bottom: 13px; font-size: 5px; letter-spacing: .11em; line-height: 1.5; }
+.scene-visual--anniversary .scene-photo { position: absolute; bottom: 32px; display: block; width: 58px; height: 91px; border: 4px solid #fbfaf5; box-shadow: 0 4px 12px rgba(52, 68, 55, .14); }
+.scene-photo-one { left: 6%; transform: rotate(-10deg); }
+.scene-photo-two { left: 34%; bottom: 47px !important; transform: rotate(6deg); }
+.scene-photo-three { right: 7%; transform: rotate(11deg); }
+.scene-visual--anniversary > b { position: absolute; right: 3%; bottom: 14px; font-size: 5px; letter-spacing: .08em; }
+.scene-bottom { display: flex; align-items: center; justify-content: space-between; height: 26px; color: #8c897c; font-size: 5px; font-weight: 700; letter-spacing: .08em; }
+.scene-sticker { position: absolute; top: 0; right: 8px; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 91px; height: 91px; border: 1px solid rgba(40, 46, 35, .25); border-radius: 50%; background: rgba(247, 247, 241, .54); color: #51594a; text-align: center; transform: rotate(7deg); }
+.scene-sticker span { color: var(--sage); font-size: 18px; }
+.scene-sticker b { font-size: 5px; letter-spacing: .1em; line-height: 1.55; }
+.scene-share { position: absolute; right: 0; bottom: 23px; z-index: 4; display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid #e7e9df; border-radius: 7px; background: white; box-shadow: 0 8px 25px rgba(51, 57, 43, .08); }
+.scene-share > span { display: grid; width: 22px; height: 22px; place-items: center; border-radius: 50%; background: #eff5e5; color: #77964d; font-size: 11px; }
+.scene-share b { font-size: 8px; }
+
+@media (max-width: 1090px) {
+  .category-scene { transform: scale(.94); transform-origin: center right; }
+}
+@media (max-width: 760px) {
+  .category-scene { width: 100%; max-width: 555px; min-height: 390px; margin: 0 auto; transform: none; }
+  .scene-halo { height: 357px; }
+  .scene-browser { top: 23px; left: 4%; width: 82%; }
+  .scene-body { min-height: 232px; }
+  .scene-visual { height: 213px; }
+  .scene-copy > strong { font-size: clamp(29px, 7vw, 39px); }
+  .scene-sticker { top: 2px; right: 3%; width: 76px; height: 76px; }
+  .scene-share { bottom: 15px; }
+}
+@media (max-width: 430px) {
+  .category-scene { min-height: 330px; }
+  .scene-halo { height: 300px; }
+  .scene-browser { top: 20px; }
+  .scene-site { padding-inline: 10px; }
+  .scene-body { min-height: 190px; padding: 20px 8px; }
+  .scene-copy { width: 57%; }
+  .scene-copy > strong { font-size: 27px; }
+  .scene-visual { top: 10px; height: 174px; }
+  .scene-visual--proposal .scene-ring { width: 78px; height: 78px; }
+  .scene-heart { top: 30px; right: 22%; font-size: 32px; }
+  .scene-visual--birthday .scene-cake-layer { right: 13%; transform: scale(.8); transform-origin: bottom right; }
+  .scene-photo-one { transform: scale(.78) rotate(-10deg); transform-origin: bottom left; }
+  .scene-photo-two { transform: scale(.78) rotate(6deg) !important; }
+  .scene-photo-three { transform: scale(.78) rotate(11deg); transform-origin: bottom right; }
+  .scene-sticker { width: 63px; height: 63px; }
+  .scene-sticker span { font-size: 13px; }
+  .scene-sticker b { font-size: 4px; }
+  .scene-share { bottom: 12px; padding: 7px 9px; }
+  .scene-share > span { width: 18px; height: 18px; font-size: 9px; }
+  .scene-share b { font-size: 7px; }
+}

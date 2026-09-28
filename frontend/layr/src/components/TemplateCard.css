@@ -1,0 +1,112 @@
+.template-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 17px; }
+.template-card { min-width: 0; }
+.template-art { position: relative; height: 238px; overflow: hidden; border: 1px solid rgba(37, 42, 34, .09); border-radius: 8px; transition: transform .25s ease, box-shadow .25s ease; }
+.template-card:hover .template-art { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(45, 50, 40, .12); }
+.template-art--portfolio { background: #eaeadd; }
+.template-art--birthday { background: #f2dfd1; }
+.template-art--proposal { background: #e9e1df; }
+.template-art--anniversary { background: #e0e9e7; }
+.template-art-browser { position: absolute; top: 10px; left: 50%; z-index: 2; display: flex; align-items: center; justify-content: space-between; width: 72%; height: 20px; padding: 0 8px; border: 1px solid rgba(36, 41, 34, .09); border-radius: 5px; background: rgba(255, 255, 255, .91); color: #7b8178; font-size: 6px; transform: translateX(-50%); }
+.template-badge { position: absolute; top: 13px; left: 12px; z-index: 3; max-width: 44%; overflow: hidden; padding: 5px 6px; border-radius: 3px; background: rgba(255, 255, 255, .82); color: #6b7267; font-size: 5px; font-weight: 800; letter-spacing: .08em; text-overflow: ellipsis; white-space: nowrap; }
+.buy-icon--compact { position: absolute; top: 9px; right: 10px; z-index: 4; display: grid; width: 29px; height: 29px; place-items: center; padding: 0; border: 1px solid rgba(34, 40, 32, .1); border-radius: 50%; background: white; color: #343d33; cursor: pointer; transition: background .18s ease, transform .18s ease; }
+.buy-icon--compact:hover { background: var(--lime); transform: scale(1.08); }
+.buy-icon svg { width: 16px; height: 16px; flex: 0 0 16px; }
+.mini-site { position: absolute; top: 37px; left: 9%; width: 82%; height: 215px; overflow: hidden; box-shadow: 0 8px 22px rgba(46, 51, 40, .13); }
+.mini-site-nav { display: flex; align-items: center; justify-content: space-between; height: 29px; padding: 0 9px; }
+.mini-site-nav b { font-family: var(--display); font-size: 7px; letter-spacing: .04em; }
+.mini-site-nav span { font-size: 4px; font-weight: 700; letter-spacing: .045em; }
+.mini-site-body { position: relative; height: calc(100% - 29px); overflow: hidden; padding: 22px 13px; }
+.mini-site-body > small { position: relative; z-index: 2; display: block; font-size: 4px; font-weight: 800; letter-spacing: .1em; }
+.mini-site-body > strong { position: relative; z-index: 2; display: block; margin-top: 8px; font-family: var(--serif); font-size: clamp(24px, 2.55vw, 33px); font-weight: 400; letter-spacing: -.065em; line-height: .94; }
+.mini-site-body > span { position: absolute; bottom: 10px; left: 13px; z-index: 2; font-size: 4px; font-weight: 800; letter-spacing: .08em; }
+.mini-deco { position: absolute; display: block; }
+
+/* Portfolio preview */
+.mini-site--portfolio { background: #f0f2e7; color: #2f4033; }
+.mini-site--portfolio .mini-site-nav { background: #e5ebd9; }
+.mini-site--portfolio .mini-site-body { background: #dce7c6; }
+.mini-site--portfolio .mini-site-body > small, .mini-site--portfolio .mini-site-body > span { color: #596c54; }
+.mini-site--portfolio .mini-site-body > strong { color: #2a3a30; font-family: var(--display); font-size: clamp(28px, 3vw, 39px); font-weight: 600; letter-spacing: -.09em; line-height: .9; }
+.mini-deco--portfolio { top: 21px; right: 9%; width: 47%; height: 68%; border: 1px solid rgba(255, 255, 255, .68); border-radius: 49% 51% 44% 56%; background: linear-gradient(145deg, #efc29a, #f1d2b1 53%, #d8866c 54%, #ca755f); transform: rotate(-22deg); }
+.mini-deco--portfolio::before { position: absolute; top: 13px; left: -12px; width: 65%; height: 75%; border-radius: 50%; background: #7d9479; content: ''; opacity: .87; }
+.mini-site--portfolio-editorial .mini-site-body { background: #e9e2d5; }
+.mini-site--portfolio-editorial .mini-site-body > strong { color: #483c34; }
+.mini-site--portfolio-editorial .mini-deco--portfolio { border-radius: 0; background: linear-gradient(135deg, #b9b6a2, #797c69); transform: rotate(8deg); }
+
+/* Birthday preview */
+.mini-site--birthday { background: #fbf3eb; color: #54403c; }
+.mini-site--birthday .mini-site-nav { border-bottom: 1px solid #eaded3; color: #77574f; }
+.mini-site--birthday .mini-site-body { background: #f4e5da; }
+.mini-site--birthday .mini-site-body > small { color: #a26d68; }
+.mini-site--birthday .mini-site-body > strong { color: #543f3c; font-size: clamp(23px, 2.5vw, 31px); }
+.mini-site--birthday .mini-site-body > span { color: #765951; }
+.mini-deco--birthday { right: 8%; bottom: 20px; width: 69px; height: 66px; border-radius: 5px 5px 12px 12px; background: linear-gradient(90deg, #d18d82, #e6b3a0 52%, #cb8178); }
+.mini-deco--birthday::before { position: absolute; top: -8px; left: -3px; width: 75px; height: 17px; border-radius: 50%; background: #f5dfcb; content: ''; }
+.mini-deco--birthday::after { position: absolute; top: -31px; left: 31px; width: 5px; height: 25px; background: repeating-linear-gradient(135deg, #fff5e8 0 4px, #d99183 4px 7px); content: ''; }
+.mini-site--birthday-party .mini-site-body { background: #f8e9c8; }
+.mini-site--birthday-party .mini-deco--birthday { background: linear-gradient(90deg, #e3a552, #f3c96f 52%, #d68c4d); }
+
+/* Proposal preview */
+.mini-site--proposal { background: #f7f0ec; color: #503f3e; }
+.mini-site--proposal .mini-site-nav { border-bottom: 1px solid #e9dcd6; color: #80615d; }
+.mini-site--proposal .mini-site-body { background: linear-gradient(145deg, #f4e6de, #ead5d1); }
+.mini-site--proposal .mini-site-body > small, .mini-site--proposal .mini-site-body > span { color: #9b7169; }
+.mini-site--proposal .mini-site-body > strong { color: #55403e; }
+.mini-deco--proposal { top: 22px; right: 15%; display: grid; width: 80px; height: 80px; place-items: center; border: 1px solid rgba(132, 91, 86, .2); border-radius: 50%; color: #fff8ef; font-family: var(--serif); font-size: 36px; }
+.mini-site--proposal-night .mini-site-body { background: radial-gradient(circle at 72% 34%, #796f85 0 2px, transparent 3px), radial-gradient(circle at 83% 58%, #d1b989 0 2px, transparent 3px), linear-gradient(145deg, #434154, #262c3c); }
+.mini-site--proposal-night .mini-site-body > small, .mini-site--proposal-night .mini-site-body > strong, .mini-site--proposal-night .mini-site-body > span { color: #f4e5c8; }
+.mini-site--proposal-night .mini-deco--proposal { border-color: rgba(246, 228, 200, .35); color: #d8b994; }
+
+/* Anniversary preview */
+.mini-site--anniversary { background: #f9faf7; color: #38473f; }
+.mini-site--anniversary .mini-site-nav { border-bottom: 1px solid #e4e9e4; color: #506d61; }
+.mini-site--anniversary .mini-site-body { background: #eaf0e8; }
+.mini-site--anniversary .mini-site-body > small, .mini-site--anniversary .mini-site-body > span { color: #779083; }
+.mini-site--anniversary .mini-site-body > strong { color: #3c5147; }
+.mini-deco--anniversary { right: 10%; bottom: 18px; width: 73px; height: 56px; border: 3px solid #faf9f3; background: linear-gradient(145deg, #d7ab87, #a66c5d); box-shadow: -16px -4px 0 -2px #7f937d, 11px -7px 0 -2px #c2bca5; transform: rotate(5deg); }
+.mini-site--anniversary-timeline .mini-site-body { background: #eee6d7; }
+.mini-site--anniversary-timeline .mini-deco--anniversary { background: linear-gradient(145deg, #b9b6a2, #767763); }
+
+.template-info { padding: 13px 1px 0; }
+.template-category-label { color: #7b8277; font-size: 8px; font-weight: 600; }
+.template-category-label span { padding-inline: 3px; color: #a5aa9f; }
+.template-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 5px; }
+.template-title-row h3 { margin: 0; font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: -.035em; }
+.template-price { flex: 0 0 auto; font-size: 11px; }
+.template-tagline { min-height: 32px; margin: 6px 0 11px; color: #777e73; font-size: 9px; line-height: 1.55; }
+.template-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 9px; border-top: 1px solid var(--line); }
+.template-number { color: #9aa095; font-size: 8px; font-weight: 700; letter-spacing: .1em; }
+.buy-icon:not(.buy-icon--compact) { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 32px; padding: 0 11px; border: 1px solid #d8ded0; border-radius: 5px; background: transparent; color: #30392f; font-size: 9px; font-weight: 700; cursor: pointer; transition: background .18s ease, border-color .18s ease, transform .18s ease; }
+.buy-icon:not(.buy-icon--compact):hover { transform: translateY(-1px); border-color: #9cac83; background: #eef3e2; }
+.buy-icon:not(.buy-icon--compact) svg { width: 14px; height: 14px; }
+
+@media (max-width: 1090px) {
+  .template-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 23px 18px; }
+  .template-art { height: 255px; }
+  .mini-site { height: 232px; }
+  .mini-site-body > strong { font-size: clamp(31px, 4vw, 43px); }
+  .mini-site--portfolio .mini-site-body > strong { font-size: clamp(38px, 5vw, 53px); }
+  .mini-site--birthday .mini-site-body > strong { font-size: clamp(31px, 4vw, 42px); }
+  .mini-site--proposal .mini-site-body > strong { font-size: clamp(34px, 4vw, 43px); }
+  .mini-site--anniversary .mini-site-body > strong { font-size: clamp(31px, 4vw, 41px); }
+}
+@media (max-width: 760px) {
+  .template-grid { grid-template-columns: 1fr; gap: 27px; }
+  .template-art { height: clamp(245px, 66vw, 320px); }
+  .mini-site { top: 38px; height: calc(100% - 22px); }
+  .mini-site-nav { height: 31px; }
+  .mini-site-body { height: calc(100% - 31px); padding: 28px 7%; }
+  .mini-site-body > small { font-size: 6px; }
+  .mini-site-body > span { left: 7%; bottom: 12px; font-size: 5px; }
+  .mini-site-body > strong { font-size: clamp(38px, 9vw, 56px); }
+  .mini-site--portfolio .mini-site-body > strong { font-size: clamp(44px, 10vw, 63px); }
+  .mini-site--birthday .mini-site-body > strong { font-size: clamp(39px, 8.3vw, 53px); }
+  .mini-site--proposal .mini-site-body > strong { font-size: clamp(44px, 9vw, 61px); }
+  .mini-site--anniversary .mini-site-body > strong { font-size: clamp(41px, 8.5vw, 56px); }
+  .mini-deco--portfolio { width: 45%; height: 74%; }
+  .mini-deco--birthday { right: 8%; bottom: 24px; transform: scale(1.15); transform-origin: bottom right; }
+  .mini-deco--proposal { right: 12%; width: 110px; height: 110px; font-size: 45px; }
+  .mini-deco--anniversary { right: 9%; bottom: 22px; transform: scale(1.18) rotate(5deg); transform-origin: bottom right; }
+  .template-title-row h3 { font-size: 17px; }
+  .template-tagline { min-height: auto; font-size: 10px; }
+}

@@ -1,0 +1,14 @@
+.category-page--proposal .category-hero { background: #f1ebec; }
+.category-page--proposal .category-hero h1 em { color: #92707a; }
+.category-page--proposal .scene-site--proposal { background: #f6edeb; color: #503f3e; }
+.category-page--proposal .scene-site--proposal .scene-body { background: linear-gradient(145deg, #f1dfd9, #ead2d2); }
+.category-page--proposal .scene-site--proposal .scene-copy > small { color: #996f75; }
+.category-page--proposal .scene-site--proposal .scene-copy > strong { color: #563f43; }
+.category-page--proposal .scene-site--proposal .scene-copy > span { color: #916b73; }
+.category-page--proposal .scene-visual--proposal .scene-ring { border-color: #b8887d; }
+.category-page--proposal .scene-visual--proposal .scene-ring::after { border-color: #b8887d; background: #dfb37c; }
+.category-page--proposal .scene-visual--proposal .scene-heart { color: #fff6ed; }
+.category-page--proposal .scene-visual--proposal > b { color: #966f6f; }
+.category-page--proposal .personalize-band { background: #eee4e5; }
+.category-page--proposal .personalize-icon { color: #a16e7b; }
+.category-page--proposal .personalize-inner h2 em { color: #92707a; }

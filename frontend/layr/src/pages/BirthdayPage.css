@@ -1,0 +1,15 @@
+.category-page--birthday .category-hero { background: #f6eee7; }
+.category-page--birthday .category-hero h1 em { color: #ad766e; }
+.category-page--birthday .scene-site--birthday { background: #fbf3ec; color: #59423e; }
+.category-page--birthday .scene-site--birthday .scene-body { background: #f3e2d7; }
+.category-page--birthday .scene-site--birthday .scene-copy > small { color: #a26d68; }
+.category-page--birthday .scene-site--birthday .scene-copy > strong { color: #59413d; }
+.category-page--birthday .scene-site--birthday .scene-copy > span { color: #9c6d64; }
+.category-page--birthday .scene-visual--birthday .scene-balloon-one { background: #d6a19c; }
+.category-page--birthday .scene-visual--birthday .scene-balloon-two { background: #d8bd89; }
+.category-page--birthday .scene-visual--birthday .scene-cake-layer { background: linear-gradient(90deg, #d18d82, #e6b3a0 52%, #cb8178); }
+.category-page--birthday .scene-visual--birthday .scene-cake-layer::before { background: #f4dbc8; }
+.category-page--birthday .scene-visual--birthday > b { color: #a26d68; }
+.category-page--birthday .personalize-band { background: #f4e6dc; }
+.category-page--birthday .personalize-icon { color: #a66c67; }
+.category-page--birthday .personalize-inner h2 em { color: #ad766e; }

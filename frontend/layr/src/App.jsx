@@ -1,122 +1,59 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useEffect, useMemo, useState } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import CartDrawer from './components/CartDrawer.jsx';
+import Footer from './components/Footer.jsx';
+import Header from './components/Header.jsx';
+import AnniversaryPage from './pages/AnniversaryPage.jsx';
+import BirthdayPage from './pages/BirthdayPage.jsx';
+import HomePage from './pages/HomePage.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
+import PortfolioPage from './pages/PortfolioPage.jsx';
+import ProposalPage from './pages/ProposalPage.jsx';
 
-function App() {
-  const [count, setCount] = useState(0)
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (hash) document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [pathname, hash]);
+  return null;
+}
+
+export default function App() {
+  const [cartItems, setCartItems] = useState([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const cartCount = useMemo(() => cartItems.reduce((sum, item) => sum + item.quantity, 0), [cartItems]);
+
+  function addToBag(template) {
+    setCartItems((current) => {
+      const match = current.find((item) => item.template.slug === template.slug);
+      if (match) return current.map((item) => item.template.slug === template.slug ? { ...item, quantity: item.quantity + 1 } : item);
+      return [...current, { template, quantity: 1 }];
+    });
+    setCartOpen(true);
+  }
+
+  function removeFromBag(slug) {
+    setCartItems((current) => current.filter((item) => item.template.slug !== slug));
+  }
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <ScrollToTop />
+      <Header cartCount={cartCount} onOpenCart={() => setCartOpen(true)} />
+      <Routes>
+        <Route path="/" element={<HomePage onAdd={addToBag} />} />
+        <Route path="/portfolios" element={<PortfolioPage onAdd={addToBag} />} />
+        <Route path="/birthday-pages" element={<BirthdayPage onAdd={addToBag} />} />
+        <Route path="/proposals" element={<ProposalPage onAdd={addToBag} />} />
+        <Route path="/anniversary-pages" element={<AnniversaryPage onAdd={addToBag} />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+      <Footer />
+      {cartOpen && <CartDrawer items={cartItems} onClose={() => setCartOpen(false)} onRemove={removeFromBag} />}
     </>
-  )
+  );
 }
-
-export default App

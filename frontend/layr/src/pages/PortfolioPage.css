@@ -1,0 +1,14 @@
+.category-page--portfolio .category-hero { background: #eff1e8; }
+.category-page--portfolio .category-hero h1 em { color: #778d5e; }
+.category-page--portfolio .scene-site--portfolio { background: #e9ecdf; color: #344236; }
+.category-page--portfolio .scene-site--portfolio .scene-body { background: #dce7c6; }
+.category-page--portfolio .scene-site--portfolio .scene-copy > strong { color: #344236; font-family: var(--display); font-weight: 600; letter-spacing: -.08em; }
+.category-page--portfolio .scene-site--portfolio .scene-copy > small { color: #69795e; }
+.category-page--portfolio .scene-site--portfolio .scene-copy > span { color: #65765c; }
+.category-page--portfolio .scene-visual--portfolio .scene-work-one { background: linear-gradient(145deg, #e8bd98, #ce7c67 58%, #455d4d 59%); }
+.category-page--portfolio .scene-visual--portfolio .scene-work-two { background: linear-gradient(135deg, #b8c59a, #7f9276 58%, #e5d2b7 59%); }
+.category-page--portfolio .scene-visual--portfolio .scene-work-three { background: #f2efe6; }
+.category-page--portfolio .scene-visual--portfolio > b { color: #6c7660; }
+.category-page--portfolio .personalize-band { background: #eff0e8; }
+.category-page--portfolio .personalize-icon { color: #6d8654; }
+.category-page--portfolio .personalize-inner h2 em { color: #778d5e; }
