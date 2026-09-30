@@ -6,6 +6,28 @@ import { apiRequest, normalizeTemplate } from "../lib/api.js";
 import { formatPrice } from "../utils/formatPrice.js";
 import "./CheckoutPage.css";
 
+const ESEWA_ENABLED = false;
+// The provided number is a Nepal local mobile number; wa.me needs country code 977.
+const WHATSAPP_NUMBER = "9779767292202";
+
+function createWhatsAppLink(template, category) {
+  const storeLink = new URL(
+    category?.path || "/",
+    window.location.origin,
+  ).toString();
+  const message = [
+    "Hi! I’m interested in this Elvi template.",
+    `Product: ${template.title}`,
+    `Category: ${category?.label || template.category}`,
+    `Price: ${formatPrice(template.price, "NPR")}`,
+    `Details: ${template.description || template.tagline || "Digital template"}`,
+    `Store: ${storeLink}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
 function submitEsewaForm(url, params) {
   if (!url || !params || typeof params !== "object")
     throw new Error(
@@ -68,6 +90,12 @@ export default function CheckoutPage({
   async function checkout(event) {
     event.preventDefault();
     setError("");
+    if (!ESEWA_ENABLED) {
+      setError(
+        "eSewa checkout is coming soon. Please contact us on WhatsApp for now.",
+      );
+      return;
+    }
     if (!template) return;
     if (demoOnly) {
       setError(
@@ -121,6 +149,7 @@ export default function CheckoutPage({
     );
 
   const category = categories.find((item) => item.key === template.category);
+  const whatsappHref = createWhatsAppLink(template, category);
   return (
     <main className="checkout-page">
       <div className="container checkout-layout">
@@ -134,8 +163,8 @@ export default function CheckoutPage({
             <em>yours.</em>
           </h1>
           <p>
-            Sign-in is required before payment so your purchase can be saved to
-            your account library.
+            Ask us about this template or arrange your order directly on
+            WhatsApp. We’ll include the product details in your message.
           </p>
           <Link className="text-link" to={category?.path || "/"}>
             ← Back to {category?.label || "templates"}
@@ -157,14 +186,14 @@ export default function CheckoutPage({
             <span>Template price</span>
             <strong>{formatPrice(template.price, "NPR")}</strong>
           </div>
-          <div className="currency-options" aria-label="Payment currency">
-            <label className="currency-option currency-option--selected">
-              <input type="radio" name="currency" checked readOnly />
+          <div className="currency-options" aria-label="Payment options">
+            <label className="currency-option currency-option--disabled">
+              <input type="radio" name="currency" disabled />
               <span>
-                <b>NPR</b>
-                <small>Pay with eSewa</small>
+                <b>eSewa · NPR</b>
+                <small>Online payments are temporarily unavailable</small>
               </span>
-              <i>✓</i>
+              <i>COMING SOON</i>
             </label>
             <label className="currency-option currency-option--disabled">
               <input type="radio" name="currency" disabled />
@@ -180,26 +209,60 @@ export default function CheckoutPage({
               {error}
             </p>
           )}
+          {demoOnly ? (
+            <button
+              className="button checkout-whatsapp-button"
+              type="button"
+              disabled
+            >
+              Preview listing — not for sale
+            </button>
+          ) : (
+            <a
+              className="button checkout-whatsapp-button"
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
+                <path
+                  d="M20.4 11.7a8.3 8.3 0 0 1-12.2 7.3L4 20l1.1-4.1a8.3 8.3 0 1 1 15.3-4.2Z"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9 8.1c.2-.4.4-.5.7-.5h.5c.2 0 .4.1.5.4l.7 1.7c.1.2 0 .4-.1.6l-.5.6c-.1.2-.2.3-.1.5.3.6.9 1.2 1.5 1.6.5.3 1.1.6 1.5.7.2.1.4 0 .5-.2l.7-.8c.2-.2.4-.2.6-.1l1.6.8c.2.1.3.3.3.5 0 .5-.3 1.2-.7 1.5-.5.5-1.2.7-1.9.6-1.2-.2-2.6-.9-3.8-1.9-1-.8-2-2.1-2.5-3.3-.4-.9-.5-1.9 0-2.7.2-.3.4-.5.5-.6Z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span>Ask about this template on WhatsApp</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          )}
           <button
             className="button button-dark checkout-pay-button"
             type="button"
             onClick={checkout}
-            disabled={busy || demoOnly}
+            disabled={!ESEWA_ENABLED || busy || demoOnly}
           >
-            {busy
-              ? "Connecting to eSewa…"
-              : demoOnly
-                ? "Demo listing — not for sale"
-                : "Continue with eSewa"}{" "}
-            <span>↗</span>
+            {demoOnly
+              ? "Demo listing — not for sale"
+              : ESEWA_ENABLED
+                ? busy
+                  ? "Connecting to eSewa…"
+                  : "Continue with eSewa"
+                : "eSewa — Coming soon"}
+            <span>{ESEWA_ENABLED ? "↗" : "SOON"}</span>
           </button>
           <p className="checkout-terms">
-            Your payment is verified by the backend before your private
-            customization link is revealed. The link is available only after
-            successful payment.
+            We’ll confirm availability and arrange the order with you on
+            WhatsApp. Your private customization link is shared only after
+            payment is confirmed.
           </p>
           <p className="checkout-secure">
-            <span>✓</span> Secure payment handoff · NPR pricing
+            <span>✓</span> Product details included in your WhatsApp message ·
+            NPR pricing
           </p>
         </section>
       </div>

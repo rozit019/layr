@@ -26,7 +26,7 @@ export default function Footer({
             ))}
           </div>
           <div>
-            <span className="footer-label">LAYR</span>
+            <span className="footer-label">ELVI</span>
             <Link to="/#featured">Templates</Link>
             <Link to="/#how-it-works">How it works</Link>
             <a href="mailto:hello@layr.example">Get in touch</a>
